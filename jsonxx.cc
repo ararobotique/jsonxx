@@ -334,15 +334,15 @@ Value::Value() : type_(INVALID_) {}
 void Value::reset() {
     if (type_ == STRING_) {
         delete string_value_;
-        string_value_ = 0;
+        string_value_ = nullptr;
     }
     else if (type_ == OBJECT_) {
         delete object_value_;
-        object_value_ = 0;
+        object_value_ = nullptr;
     }
     else if (type_ == ARRAY_) {
         delete array_value_;
-        array_value_ = 0;
+        array_value_ = nullptr;
     }
 }
 
@@ -525,7 +525,7 @@ typedef unsigned char byte;
 
 //template<bool quote>
 std::string escape_string( const std::string &input, const bool quote = false ) {
-    static std::string map[256], *once = 0;
+    static std::string map[256], *once = nullptr;
     if( !once ) {
         // base
         for( int i = 0; i < 256; ++i ) {
@@ -620,7 +620,7 @@ namespace json {
 namespace xml {
 
 std::string escape_attrib( const std::string &input ) {
-    static std::string map[256], *once = 0;
+    static std::string map[256], *once = nullptr;
     if( !once ) {
         for( int i = 0; i < 256; ++i )
             map[ i ] = "_";
@@ -640,7 +640,7 @@ std::string escape_attrib( const std::string &input ) {
 }
 
 std::string escape_tag( const std::string &input, unsigned format ) {
-    static std::string map[256], *once = 0;
+    static std::string map[256], *once = nullptr;
     if( !once ) {
         for( int i = 0; i < 256; ++i )
             map[ i ] = std::string() + char(i);
@@ -851,7 +851,7 @@ std::string Object::json() const {
 
     std::string result = tag( jsonxx::JSON, 0, std::string(), v );
 
-    v.object_value_ = 0;
+    v.object_value_ = nullptr;
     return remove_last_comma( result );
 }
 
@@ -865,7 +865,7 @@ std::string Object::xml( unsigned format, const std::string &header, const std::
 
     std::string result = tag( format, 0, std::string(), v, attrib.empty() ? std::string(defrootattrib[format]) : attrib );
 
-    v.object_value_ = 0;
+    v.object_value_ = nullptr;
     return ( header.empty() ? std::string(defheader[format]) : header ) + result;
 }
 
@@ -878,7 +878,7 @@ std::string Array::json() const {
 
     std::string result = tag( jsonxx::JSON, 0, std::string(), v );
 
-    v.array_value_ = 0;
+    v.array_value_ = nullptr;
     return remove_last_comma( result );
 }
 
@@ -892,7 +892,7 @@ std::string Array::xml( unsigned format, const std::string &header, const std::s
 
     std::string result = tag( format, 0, std::string(), v, attrib.empty() ? std::string(defrootattrib[format]) : attrib );
 
-    v.array_value_ = 0;
+    v.array_value_ = nullptr;
     return ( header.empty() ? std::string(defheader[format]) : header ) + result;
 }
 
@@ -1147,9 +1147,9 @@ Value::Value(const Value &other) : type_(INVALID_) {
 }
 bool Value::empty() const {
   if( type_ == INVALID_ ) return true;
-  if( type_ == STRING_ && string_value_ == 0 ) return true;
-  if( type_ == ARRAY_ && array_value_ == 0 ) return true;
-  if( type_ == OBJECT_ && object_value_ == 0 ) return true;
+  if( type_ == STRING_ && string_value_ == nullptr ) return true;
+  if( type_ == ARRAY_ && array_value_ == nullptr ) return true;
+  if( type_ == OBJECT_ && object_value_ == nullptr ) return true;
   return false;
 }
 bool Value::parse(std::istream &input) {
